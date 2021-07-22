@@ -1,9 +1,11 @@
 from rest_framework import serializers
+from .models import *
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    # настройте сериализатор для продукта
-    pass
+    class Meta:
+        model = Product
+        fields = "__all__"
 
 
 class ProductPositionSerializer(serializers.ModelSerializer):
