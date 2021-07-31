@@ -3,8 +3,8 @@ POST http://localhost:8000/api/v1/products/
 Content-Type: application/json
 
 {
-  "title": "Помидор",
-  "description": "Лучшие помидоры на рынке"
+  "title": "Лук",
+  "description": "ФУУУУУУУУ"
 }
 
 ###
@@ -16,7 +16,7 @@ Content-Type: application/json
 ###
 
 # обновление продукта
-PATCH http://localhost:8000/api/v1/products/1/
+PATCH http://localhost:8000/api/v1/products/3/
 Content-Type: application/json
 
 {
@@ -32,7 +32,30 @@ Content-Type: application/json
 ###
 
 # поиск продуктов по названию и описанию
-GET http://localhost:8000/api/v1/products/?search=помидор
+GET http://localhost:8000/api/v1/products/?search=помид
+Content-Type: application/json
+
+###
+
+# поиск продуктов по названию и описанию но с заменой ключевого слова
+GET http://localhost:8000/api/v1/products/?q=помид
+Content-Type: application/json
+
+###
+# сортировка
+GET http://localhost:8000/api/v1/products/?ordering=title
+Content-Type: application/json
+
+###
+
+# просмотр складов
+GET http://localhost:8000/api/v1/stocks/
+Content-Type: application/json
+
+###
+
+# просмотр складов но номеру
+GET http://localhost:8000/api/v1/stocks/2/
 Content-Type: application/json
 
 ###
@@ -42,25 +65,35 @@ POST http://localhost:8000/api/v1/stocks/
 Content-Type: application/json
 
 {
-  "address": "мой адрес не дом и не улица, мой адрес сегодня такой: www.ленинград-спб.ru3",
+  "address": "лукина варина 2",
   "positions": [
     {
       "product": 2,
-      "quantity": 250,
-      "price": 120.50
+      "quantity": 1000,
+      "price": 100
     },
     {
-      "product": 3,
-      "quantity": 100,
-      "price": 180
+      "product": 4,
+      "quantity": 17,
+      "price": 1734
     }
   ]
 }
 
 ###
 
-# обновляем записи на складе
-PATCH http://localhost:8000/api/v1/stocks/4/
+# создание склада #2 - ПУСТОГО
+POST http://localhost:8000/api/v1/stocks/
+Content-Type: application/json
+
+{
+  "address": "луковый склад"
+}
+
+###
+
+# обновляем записи на складе по его номеру
+PATCH http://localhost:8000/api/v1/stocks/7/
 Content-Type: application/json
 
 {
@@ -80,6 +113,21 @@ Content-Type: application/json
 
 ###
 
+# обновляем записи на складе по его номеру, 2
+PATCH http://localhost:8000/api/v1/stocks/6/
+Content-Type: application/json
+
+{
+  "positions": [
+    {
+      "product": 5,
+      "quantity": 11,
+      "price": 222
+    }
+  ]
+}
+
+###
 # поиск складов, где есть определенный продукт
-GET http://localhost:8000/api/v1/stocks/?products=2
+GET http://localhost:8000/api/v1/stocks/?products=5
 Content-Type: application/json
