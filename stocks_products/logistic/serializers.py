@@ -70,3 +70,15 @@ class StockSerializer(serializers.ModelSerializer):
             )
 
         return stock
+
+
+# class StockSerializer(WritableNestedModelSerializer):
+#     """красота... огромное спасибо beda-software, явно русские)))))"""
+#     positions = ProductPositionSerializer(
+#         many=True,
+#         # read_only=True  # вот это чтобы можно было создать как бы пустой склад, не заполняя его
+#     )
+#
+#     class Meta:
+#         model = Stock
+#         fields = "__all__"

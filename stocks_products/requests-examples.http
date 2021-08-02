@@ -131,13 +131,6 @@ Content-Type: application/json
 
 ###
 
-# удаление продукта из склада по номеру продукта
-DELETE http://localhost:8000/api/v1/stocks/13/?products=3
-Content-Type: application/json
-
-###
-
-###
 # поиск складов, где есть определенный продукт
 GET http://localhost:8000/api/v1/stocks/?products=5
 Content-Type: application/json
