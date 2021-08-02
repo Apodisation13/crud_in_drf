@@ -5,7 +5,6 @@ from .models import *
 
 
 class ProductSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Product
         fields = "__all__"
@@ -16,13 +15,12 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductPositionSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = StockProduct
         fields = ['id', 'product', 'quantity', 'price']
 
 
-class StockSerializer(WritableNestedModelSerializer):
+class StockSerializer(serializers.ModelSerializer):
     """красота... огромное спасибо beda-software, явно русские)))))"""
     positions = ProductPositionSerializer(
         many=True,
@@ -33,42 +31,42 @@ class StockSerializer(WritableNestedModelSerializer):
         model = Stock
         fields = "__all__"
 
-#     def create(self, validated_data):
-#         """нужен полюбак для m2m если не указано read_only=True"""
-#         positions = validated_data.pop('positions')
-#
-#         stock = super().create(validated_data)
-#
-#         for position in positions:
-#             StockProduct.objects.create(stock=stock, **position)
-#
-#         return stock
-#
-#     def update(self, instance, validated_data):
-#         """как же всё-таки это надо было написать??"""
+    def create(self, validated_data):
+        """нужен полюбак для m2m если не указано read_only=True"""
+        positions = validated_data.pop('positions')
 
-#         # достаем связанные данные для других таблиц
-#         positions = validated_data.pop('positions')
-#         print(positions)
-#
-#         # обновляем склад по его параметрам
-#         stock = super().update(instance, validated_data)
-#         print(stock)
-#
-#         # здесь вам надо обновить связанные таблицы
-#         # в нашем случае: таблицу StockProduct
-#         # с помощью списка positions
-#
-#         for position in positions:
-#             StockProduct.objects.filter(
-#                             product_id=position.get('product_id'),
-#                             stock_id=position.get('stock_id')
-#                         ).update_or_create(
-#                             defaults={
-#                                 'price': position.get('price'),
-#                                 'quantity': position.get('quantity'),
-#                                 'product_id': position.get('product_id'),
-#                                 'stock_id': position.get('stock_id'),
-#                             }
-#                         )
-#         return stock
+        stock = super().create(validated_data)
+
+        for position in positions:
+            StockProduct.objects.create(stock=stock, **position)
+
+        return stock
+
+    def update(self, instance, validated_data):
+        print(instance, instance.id)
+        positions = validated_data.pop('positions')
+        stock = super().update(instance, validated_data)
+
+        for position in positions:
+            print(position)
+
+            # удалить продукт если пришло количетство = 0
+            if position.get('quantity') == 0:
+                StockProduct.objects.filter(
+                    product=position.get('product'),
+                    stock=stock.id).delete()
+                continue
+
+            StockProduct.objects.filter(
+                product=position.get('product'),
+                stock=stock.id
+            ).update_or_create(
+                defaults={
+                    'price': position.get('price'),
+                    'quantity': position.get('quantity'),
+                    'product': position.get('product'),
+                    'stock': stock,
+                }
+            )
+
+        return stock

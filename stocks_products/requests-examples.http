@@ -55,7 +55,7 @@ Content-Type: application/json
 ###
 
 # просмотр складов но номеру
-GET http://localhost:8000/api/v1/stocks/2/
+GET http://localhost:8000/api/v1/stocks/14/
 Content-Type: application/json
 
 ###
@@ -65,13 +65,8 @@ POST http://localhost:8000/api/v1/stocks/
 Content-Type: application/json
 
 {
-  "address": "лукина варина 2",
+  "address": "лукина варина 3",
   "positions": [
-    {
-      "product": 2,
-      "quantity": 1000,
-      "price": 100
-    },
     {
       "product": 4,
       "quantity": 17,
@@ -92,21 +87,28 @@ Content-Type: application/json
 
 ###
 
+
+# удаление склада по номеру
+DELETE http://localhost:8000/api/v1/stocks/12/
+Content-Type: application/json
+
+###
+
 # обновляем записи на складе по его номеру
-PATCH http://localhost:8000/api/v1/stocks/7/
+PATCH http://localhost:8000/api/v1/stocks/14/
 Content-Type: application/json
 
 {
   "positions": [
     {
       "product": 2,
-      "quantity": 100,
-      "price": 130.80
+      "quantity": 0,
+      "price": 1300.80
     },
     {
       "product": 3,
-      "quantity": 243,
-      "price": 145
+      "quantity": 156,
+      "price": 1450
     }
   ]
 }
@@ -114,18 +116,26 @@ Content-Type: application/json
 ###
 
 # обновляем записи на складе по его номеру, 2
-PATCH http://localhost:8000/api/v1/stocks/6/
+PATCH http://localhost:8000/api/v1/stocks/14/
 Content-Type: application/json
 
 {
   "positions": [
     {
-      "product": 5,
-      "quantity": 11,
+      "product": 2,
+      "quantity": 0,
       "price": 222
     }
   ]
 }
+
+###
+
+# удаление продукта из склада по номеру продукта
+DELETE http://localhost:8000/api/v1/stocks/13/?products=3
+Content-Type: application/json
+
+###
 
 ###
 # поиск складов, где есть определенный продукт
